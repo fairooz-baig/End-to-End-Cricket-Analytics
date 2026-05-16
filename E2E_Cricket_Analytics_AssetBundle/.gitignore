@@ -1,0 +1,104 @@
+.databricks/
+build/
+dist/
+__pycache__/
+*.egg-info
+.venv/
+scratch/**
+!scratch/README.md
+**/explorations/**
+**/!explorations/README.md
+
+# Databricks & Python
+*.ipynb_checkpoints/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Databricks specific
+*.dbc
+*.db
+.dbfs/
+ Volumes/
+ /dbfs/
+ /tmp/
+*.log
+logs/
+
+# Credentials & Secrets (Very Important)
+*.key
+*.pem
+*.env
+.env*
+secrets.json
+config.json
+credentials.json
+*.secret
+
+# Data files (Do NOT commit raw data)
+*.json
+*.csv
+*.parquet
+*.orc
+*.avro
+data/
+raw/
+bronze/
+silver/
+gold/
+*.geojson
+
+# IDE & Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Notebooks cache
+.ipynb_checkpoints
+**/.ipynb_checkpoints/
+
+# Spark & Java
+metastore_db/
+derby.log
+spark-warehouse/
+
+# OS generated files
+*.log
+*.tmp
+
+# Virtual environments
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Jupyter Notebook
+.ipynb_checkpoints
