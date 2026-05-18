@@ -1,0 +1,19 @@
+# The main pipeline for E2E_Cricket_Analytics_AssetBundle
+
+resources:
+  pipelines:
+    E2E_Cricket_Analytics_AssetBundle_etl:
+      name: Bronze_Silver_dev
+      configuration:
+        catalog_name: ${var.catalog}
+      libraries:
+        - glob:
+            include: ../src/DLT_pipelines/Bronze_Silver_Cricket_Data/transformations/**
+      schema: silver
+      continuous: false
+      development: false
+      photon: true
+      channel: CURRENT
+      catalog: ${var.catalog}
+      serverless: true
+      root_path: ../src/DLT_pipelines/Bronze_Silver_Cricket_Data
