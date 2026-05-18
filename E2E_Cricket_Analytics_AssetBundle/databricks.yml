@@ -15,6 +15,8 @@ variables:
     description: The schema to use
   warehouse_id:
     description: warehouseId
+  spn_id:
+    description: spnId
 
 targets:
   dev:
@@ -30,6 +32,7 @@ targets:
       catalog: cricket_dev
       schema: dev
       warehouse_id: b3a1e6bf1f318106
+      spn_id: 532d889f-4309-429b-abfc-1180269be39d
     presets:
       artifacts_dynamic_version: true
   prod:
@@ -42,6 +45,9 @@ targets:
       catalog: cricket_prod
       schema: prod
       warehouse_id: b3a1e6bf1f318106
+      spn_id: 532d889f-4309-429b-abfc-1180269be39d
     permissions:
       - user_name: fairoozbaig07@gmail.com
+        level: CAN_MANAGE
+      - group_name: cricket_prod_writers
         level: CAN_MANAGE
