@@ -13,7 +13,7 @@ variables:
     description: The catalog to use
   schema:
     description: The schema to use
-  warehouse_id :
+  warehouse_id:
     description: warehouse id
 
 targets:
