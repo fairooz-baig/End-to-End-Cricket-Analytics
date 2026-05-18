@@ -43,7 +43,6 @@ credentials.json
 *.secret
 
 # Data files (Do NOT commit raw data)
-*.json
 *.csv
 *.parquet
 *.orc

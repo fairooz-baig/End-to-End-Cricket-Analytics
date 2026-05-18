@@ -1,0 +1,465 @@
+{
+  "datasets": [
+    {
+      "name": "aa6a6f58",
+      "displayName": "E_E_Cricket_Analytics_Dashboard",
+      "queryLines": [
+        "select * from cricket_dev.silver.cricket_matches_final "
+      ],
+      "columns": [
+        {
+          "displayName": "Toss Winner Won Match",
+          "description": "Whether the team that won the toss also won the match",
+          "expression": "`toss_winner` = `winner`"
+        }
+      ]
+    },
+    {
+      "name": "58a17f41",
+      "displayName": "Total Cricket Matches Count",
+      "queryLines": [
+        "SELECT COUNT(*) AS total_matches\r\n",
+        "FROM `cricket_dev`.`silver`.`cricket_matches_final`"
+      ]
+    },
+    {
+      "name": "90fdc08b",
+      "displayName": "Untitled dataset 1",
+      "queryLines": [
+        ""
+      ]
+    },
+    {
+      "name": "top5_teams",
+      "displayName": "Top 5 Teams with Most Wins",
+      "queryLines": [
+        "SELECT\n",
+        "  winner_team,\n",
+        "  COUNT(*) as wins\n",
+        "FROM\n",
+        "  cricket_dev.silver.cricket_matches_final\n",
+        "WHERE\n",
+        "  winner_team IS NOT NULL\n",
+        "GROUP BY\n",
+        "  winner_team\n",
+        "ORDER BY\n",
+        "  wins DESC\n",
+        "LIMIT 5"
+      ]
+    },
+    {
+      "name": "win_percentage",
+      "displayName": "Win Percentage by Team",
+      "queryLines": [
+        "WITH team_matches AS (\n",
+        "  SELECT\n",
+        "    team1 AS team\n",
+        "  FROM\n",
+        "    cricket_matches_final\n",
+        "  UNION ALL\n",
+        "  SELECT\n",
+        "    team2 AS team\n",
+        "  FROM\n",
+        "    cricket_matches_final\n",
+        "),\n",
+        "match_counts AS (\n",
+        "  SELECT\n",
+        "    team,\n",
+        "    COUNT(*) as total_matches\n",
+        "  FROM\n",
+        "    team_matches\n",
+        "  WHERE\n",
+        "    team IS NOT NULL\n",
+        "  GROUP BY\n",
+        "    team\n",
+        "),\n",
+        "win_counts AS (\n",
+        "  SELECT\n",
+        "    winner_team as team,\n",
+        "    COUNT(*) as wins\n",
+        "  FROM\n",
+        "    cricket_matches_final\n",
+        "  WHERE\n",
+        "    winner_team IS NOT NULL\n",
+        "  GROUP BY\n",
+        "    winner_team\n",
+        ")\n",
+        "SELECT\n",
+        "  m.team,\n",
+        "  COALESCE(w.wins, 0) as wins,\n",
+        "  m.total_matches,\n",
+        "  (COALESCE(w.wins, 0) * 100.0 / m.total_matches) as win_percentage\n",
+        "FROM\n",
+        "  match_counts m\n",
+        "    LEFT JOIN win_counts w\n",
+        "      ON m.team = w.team\n",
+        "ORDER BY\n",
+        "  win_percentage DESC"
+      ],
+      "catalog": "cricket_dev",
+      "schema": "silver"
+    }
+  ],
+  "pages": [
+    {
+      "name": "637f3d94",
+      "displayName": "Cricket",
+      "layout": [
+        {
+          "widget": {
+            "name": "5780675d",
+            "multilineTextboxSpec": {
+              "lines": [
+                "<span style=\"text-align:center;display:block\"><span style=\"font-size:48px;line-height:1.5\">**Cricket Analytics Dashboard**</span></span>"
+              ]
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 12,
+            "height": 2
+          }
+        },
+        {
+          "widget": {
+            "name": "cricket",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "aa6a6f58",
+                  "fields": [
+                    {
+                      "name": "city",
+                      "expression": "`city`"
+                    },
+                    {
+                      "name": "team1",
+                      "expression": "`team1`"
+                    },
+                    {
+                      "name": "team2",
+                      "expression": "`team2`"
+                    },
+                    {
+                      "name": "winner_team",
+                      "expression": "`winner_team`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 2,
+              "frame": {
+                "showTitle": true,
+                "title": "Cricket matches data"
+              },
+              "widgetType": "table",
+              "encodings": {
+                "columns": [
+                  {
+                    "fieldName": "city"
+                  },
+                  {
+                    "fieldName": "team1"
+                  },
+                  {
+                    "fieldName": "team2"
+                  },
+                  {
+                    "fieldName": "winner_team"
+                  }
+                ]
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 2,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "11f0ab34",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "aa6a6f58",
+                  "fields": [
+                    {
+                      "name": "city",
+                      "expression": "`city`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Matches by City"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "city",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 6,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "1c747cab",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "aa6a6f58",
+                  "fields": [
+                    {
+                      "name": "Toss Winner Won Match",
+                      "expression": "`Toss Winner Won Match`"
+                    },
+                    {
+                      "name": "count(*)",
+                      "expression": "COUNT(`*`)"
+                    }
+                  ],
+                  "disaggregated": false
+                }
+              }
+            ],
+            "spec": {
+              "frame": {
+                "showTitle": true,
+                "title": "Match Winner vs Toss Winner"
+              },
+              "version": 3,
+              "widgetType": "bar",
+              "encodings": {
+                "x": {
+                  "fieldName": "Toss Winner Won Match",
+                  "format": {
+                    "type": "alias",
+                    "mappings": [
+                      {
+                        "value": "true",
+                        "alias": "Toss Winner Won Match"
+                      },
+                      {
+                        "value": "false",
+                        "alias": "Toss Winner Lost Match"
+                      }
+                    ]
+                  },
+                  "scale": {
+                    "type": "categorical"
+                  }
+                },
+                "y": {
+                  "fieldName": "count(*)",
+                  "axis": {
+                    "title": "Number of Matches"
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 8,
+            "width": 6,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "697198f2",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "top5_teams",
+                  "fields": [
+                    {
+                      "name": "wins",
+                      "expression": "`wins`"
+                    },
+                    {
+                      "name": "winner_team",
+                      "expression": "`winner_team`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Top 5 Teams with Most Wins"
+              },
+              "widgetType": "pie",
+              "encodings": {
+                "angle": {
+                  "fieldName": "wins",
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                },
+                "color": {
+                  "fieldName": "winner_team",
+                  "scale": {
+                    "type": "categorical"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 14,
+            "width": 12,
+            "height": 6
+          }
+        },
+        {
+          "widget": {
+            "name": "533a07a6",
+            "queries": [
+              {
+                "name": "main_query",
+                "query": {
+                  "datasetName": "win_percentage",
+                  "fields": [
+                    {
+                      "name": "team",
+                      "expression": "`team`"
+                    },
+                    {
+                      "name": "win_percentage",
+                      "expression": "`win_percentage`"
+                    }
+                  ],
+                  "disaggregated": true
+                }
+              }
+            ],
+            "spec": {
+              "version": 3,
+              "frame": {
+                "showTitle": true,
+                "title": "Win Percentage by Team"
+              },
+              "widgetType": "line",
+              "encodings": {
+                "x": {
+                  "fieldName": "team",
+                  "scale": {
+                    "type": "categorical",
+                    "sort": {
+                      "by": "y-reversed"
+                    }
+                  }
+                },
+                "y": {
+                  "fieldName": "win_percentage",
+                  "axis": {
+                    "title": "Win Percentage (%)"
+                  },
+                  "format": {
+                    "type": "number-plain",
+                    "abbreviation": "none",
+                    "decimalPlaces": {
+                      "type": "max",
+                      "places": 1
+                    }
+                  },
+                  "scale": {
+                    "type": "quantitative"
+                  }
+                }
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 20,
+            "width": 12,
+            "height": 6
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_CANVAS",
+      "layoutVersion": "GRID_V1"
+    },
+    {
+      "name": "c8be53fc",
+      "displayName": "Global Filters",
+      "layout": [
+        {
+          "widget": {
+            "name": "03e7e868",
+            "spec": {
+              "version": 2,
+              "widgetType": "filter-single-select",
+              "encodings": {},
+              "frame": {
+                "showTitle": true
+              }
+            }
+          },
+          "position": {
+            "x": 0,
+            "y": 0,
+            "width": 1,
+            "height": 2
+          }
+        }
+      ],
+      "pageType": "PAGE_TYPE_GLOBAL_FILTERS",
+      "layoutVersion": "GRID_V1"
+    }
+  ],
+  "uiSettings": {
+    "theme": {
+      "widgetHeaderAlignment": "ALIGNMENT_UNSPECIFIED"
+    },
+    "applyModeEnabled": false
+  }
+}

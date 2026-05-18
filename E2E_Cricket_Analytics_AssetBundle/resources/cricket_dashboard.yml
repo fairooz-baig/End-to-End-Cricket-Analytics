@@ -2,5 +2,5 @@ resources:
   dashboards:
     cricket_data:
       display_name: 'End-to-End-Cricket-Analytics'
-      file_path: ../src/dashboards/Cricket_data_dashboard.lvdash.json
+      file_path: ../src/dashboard/Cricket_data_dashboard.lvdash.json
       warehouse_id: ${var.warehouse_id}
