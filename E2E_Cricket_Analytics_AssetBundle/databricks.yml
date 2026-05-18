@@ -14,7 +14,7 @@ variables:
   schema:
     description: The schema to use
   warehouse_id :
-    description: warehouse_id
+    description: warehouse id
 
 targets:
   dev:
