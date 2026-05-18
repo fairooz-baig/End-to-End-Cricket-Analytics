@@ -1,7 +1,7 @@
 resources:
   jobs:
     End_to_End_Cricket_Analytics_Job:
-      name: End_to_End_Cricket_Analytics_Job
+      name: End_to_End_Cricket_Analytics_Job_Prod
       tasks:
         - task_key: Bronze_Ingestion
           notebook_task:
