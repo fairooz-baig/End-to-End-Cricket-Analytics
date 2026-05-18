@@ -14,7 +14,7 @@ variables:
   schema:
     description: The schema to use
   warehouse_id:
-    description: warehouse id
+    description: warehouseId
 
 targets:
   dev:
@@ -41,6 +41,7 @@ targets:
     variables:
       catalog: cricket_prod
       schema: prod
+      warehouse_id: b3a1e6bf1f318106
     permissions:
       - user_name: fairoozbaig07@gmail.com
         level: CAN_MANAGE
