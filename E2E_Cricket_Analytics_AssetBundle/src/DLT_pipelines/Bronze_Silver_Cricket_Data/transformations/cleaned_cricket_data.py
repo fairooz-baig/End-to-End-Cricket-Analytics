@@ -55,13 +55,10 @@ def cricket_matches_vw():
     return df
 
 #DLT Streaming
-dlt.create_streaming_table(
-    name="cricket_matches_cleaned",
-    comment="Final Cricket Matches Table (SCD Type 1)"
-)
+dlt.create_streaming_table(name="cricket_data_final")
 
 dlt.apply_changes(
-    target="cricket_matches_cleaned",
+    target="cricket_data_final",
     source="cricket_matches_vw",
     keys=[primary_key],
     sequence_by="_load_timestamp",
