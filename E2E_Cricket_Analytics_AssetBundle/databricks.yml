@@ -17,6 +17,9 @@ variables:
     description: warehouseId
   spn_id:
     description: spnId
+  rapidapi_key:
+    description: "RapidAPI Key"
+    default: ""
 
 targets:
   dev:
@@ -46,6 +49,7 @@ targets:
       schema: prod
       warehouse_id: b3a1e6bf1f318106
       spn_id: 532d889f-4309-429b-abfc-1180269be39d
+      
     permissions:
       - user_name: fairoozbaig07@gmail.com
         level: CAN_MANAGE
